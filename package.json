@@ -1,0 +1,23 @@
+{
+  "name": "helloworld-main",
+  "version": "1.0.0",
+  "description": "",
+  "main": "sw.js",
+  "scripts": {
+    "test": "echo \"Running tests...\" && exit 0",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "start": "http-server -p 8080 -o helloworld.html",
+    "dev": "live-server --open=helloworld.html --port=3000"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.14.0",
+    "globals": "^17.14.0",
+    "http-server": "^14.1.1"
+  }
+}

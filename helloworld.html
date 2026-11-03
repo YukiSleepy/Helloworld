@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Hello World</title>
+
+  <meta name="description" content="A simple and fast Progressive Web App.">
+
+  <link rel="manifest" href="./mypwa.json">
+  <link rel="icon" href="./icon512.png">
+
+  <style>
+    h1 {
+      color: rgb(64, 0, 255);
+      font-size: 5vw;
+      font-family: 'Trebuchet MS', 'Lucida Sans Unicode',
+                   'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <h1>Hello World!</h1>
+    <button id="startCapture">Capture Screen</button>
+  </main>
+
+  <script>
+  
+    if ("serviceWorker" in navigator) {
+      const isDev = location.port === "3000";
+
+      if (isDev) {
+        // Dev mode: remove any old service worker and its caches
+        navigator.serviceWorker.getRegistrations().then(regs => {
+          regs.forEach(reg => reg.unregister());
+        });
+        caches.keys().then(keys => keys.forEach(key => caches.delete(key)));
+        console.log("Dev mode: service worker disabled");
+      } else {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("./sw.js")
+            .then(() => console.log("Service worker registered"))
+            .catch(error => console.error("Service worker failed:", error));
+        });
+      }
+    }
+  </script>
+
+  <script>
+    const startCaptureButton = document.getElementById("startCapture");
+
+    startCaptureButton.addEventListener("click", async () => {
+      try {
+        const stream = await navigator.mediaDevices.getDisplayMedia({
+          video: true,
+          audio: true
+        });
+
+        console.log("Screen capture started!");
+
+        const video = document.createElement("video");
+        video.srcObject = stream;
+        video.autoplay = true;
+        video.controls = true;
+        video.style.width = "80%";
+        video.style.display = "block";
+        video.style.marginTop = "20px";
+
+        document.body.appendChild(video);
+
+      } catch (error) {
+        console.error("Screen capture failed:", error);
+      }
+    });
+  </script>
+  
+</body>
+</html>
